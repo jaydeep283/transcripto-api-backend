@@ -60,12 +60,15 @@ async def upload_audio_file(
         
         # Upload to S3
         s3_url = await s3_service.upload_file(file, object_name)
+
+        # Generate presigned URL for the uploaded file
+        presigned_url = s3_service.generate_presigned_url(object_name)
         
         # Create job record
         job = TranscriptionJob(
             user_id=current_user.id,
             filename=file.filename,
-            s3_url=s3_url,
+            s3_url=presigned_url,
             status=JobStatus.PENDING.value,
             enable_speaker_diarization=enable_speaker_diarization,
             enable_sentiment_analysis=enable_sentiment_analysis,

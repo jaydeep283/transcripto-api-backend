@@ -28,7 +28,11 @@ class AssemblyAIService:
                 sentiment_analysis=enable_sentiment_analysis,
                 auto_chapters=True,
                 punctuate=True,
-                format_text=True
+                format_text=True,
+                summarization=True,
+                summary_model="informative",
+                summary_type="bullets",
+                speech_model=aai.SpeechModel.slam_1
             )
             
             logger.info(f"Starting transcription for audio: {audio_url}")
@@ -53,7 +57,7 @@ class AssemblyAIService:
                 "processing_time": None,  # Will be calculated by worker
                 "speaker_diarization_results": None,
                 "sentiment_analysis_results": None,
-                "chapters": None
+                "summary": None
             }
             
             # Add speaker diarization results
@@ -70,9 +74,9 @@ class AssemblyAIService:
                 result["speaker_diarization_results"] = speaker_results
             
             # Add sentiment analysis results
-            if enable_sentiment_analysis and hasattr(transcript, 'sentiment_analysis_results'):
+            if enable_sentiment_analysis and hasattr(transcript, 'sentiment_analysis'):
                 sentiment_results = []
-                for sentiment in transcript.sentiment_analysis_results:
+                for sentiment in transcript.sentiment_analysis:
                     sentiment_results.append({
                         "text": sentiment.text,
                         "sentiment": sentiment.sentiment.value,
@@ -82,18 +86,9 @@ class AssemblyAIService:
                     })
                 result["sentiment_analysis_results"] = sentiment_results
             
-            # Add chapters for summarization
-            if hasattr(transcript, 'chapters') and transcript.chapters:
-                chapters = []
-                for chapter in transcript.chapters:
-                    chapters.append({
-                        "summary": chapter.summary,
-                        "headline": chapter.headline,
-                        "gist": chapter.gist,
-                        "start": chapter.start,
-                        "end": chapter.end
-                    })
-                result["chapters"] = chapters
+            # Add summarization
+            if hasattr(transcript, 'summary'):
+                result["summary"] = transcript.summary
             
             logger.info("Transcription completed successfully")
             return result

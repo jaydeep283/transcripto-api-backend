@@ -55,10 +55,11 @@ def process_transcription_job(self, job_id: int):
         job.speaker_diarization_results = result.get("speaker_diarization_results")
         job.sentiment_analysis_results = result.get("sentiment_analysis_results")
         
-        # Generate summary from chapters if available
-        if result.get("chapters"):
-            summary_parts = [chapter.get("summary", "") for chapter in result["chapters"]]
-            job.summary = " ".join(filter(None, summary_parts))
+        # Add summarry if available
+        if result.get("summary"):
+            job.summary = result["summary"]
+        else:
+            job.summary = None
         
         job.completed_at = datetime.utcnow()
         db.commit()
