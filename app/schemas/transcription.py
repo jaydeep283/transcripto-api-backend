@@ -28,8 +28,8 @@ class TranscriptionJobResponse(BaseModel):
     transcript_text: Optional[str]
     confidence_score: Optional[float]
     processing_time: Optional[float]
-    speaker_diarization_results: Optional[Dict[str, Any]]
-    sentiment_analysis_results: Optional[Dict[str, Any]]
+    speaker_diarization_results: Optional[List[Dict[str, Any]]]
+    sentiment_analysis_results: Optional[List[Dict[str, Any]]]
     summary: Optional[str]
     error_message: Optional[str]
     

@@ -52,6 +52,9 @@ services:
             - DATABASE_URL=postgresql://postgres:postgres@postgres/transcription_db
             - REDIS_URL=redis://redis:6379
             - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+            - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+            - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+            - AWS_REGION=${AWS_REGION}
         depends_on:
             postgres:
                 condition: service_healthy

@@ -26,13 +26,13 @@ class AssemblyAIService:
             config = aai.TranscriptionConfig(
                 speaker_labels=enable_speaker_diarization,
                 sentiment_analysis=enable_sentiment_analysis,
-                auto_chapters=True,
+                # auto_chapters=True,
                 punctuate=True,
                 format_text=True,
                 summarization=True,
                 summary_model="informative",
                 summary_type="bullets",
-                speech_model=aai.SpeechModel.slam_1
+                # speech_model=aai.SpeechModel.slam_1
             )
             
             logger.info(f"Starting transcription for audio: {audio_url}")
