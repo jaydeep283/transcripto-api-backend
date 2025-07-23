@@ -93,7 +93,10 @@ async def upload_audio_file(
             message="File uploaded successfully. Transcription job started.",
             status=JobStatus.PENDING
         )
-        
+
+    except HTTPException as http_exc:
+        # Re-raise HTTPExceptions
+        raise http_exc    
     except Exception as e:
         logger.error(f"Failed to upload file: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
